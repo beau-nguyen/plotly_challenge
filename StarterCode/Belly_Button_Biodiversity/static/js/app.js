@@ -15,15 +15,59 @@ function buildMetadata(sample) {
     // buildGauge(data.WFREQ);
 }
 
-function buildCharts(sample) {
-
-  // @TODO: Use `d3.json` to fetch the sample data for the plots
-
-    // @TODO: Build a Bubble Chart using the sample data
-
-    // @TODO: Build a Pie Chart
+//pie chart
+ // @TODO: Build a Pie Chart
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
+
+function buildCharts(sample) {
+  var url='/samples/' +sample; 
+  // @TODO: Use `d3.json` to fetch the sample data for the plots
+  d3.json(url).then(function(data) {  
+
+    trace1={
+      labels: data.otu_ids.slice(0,9),
+      values: data.sample_values.slice(0,9),
+      type: 'pie'
+
+    }
+    var data1= [trace1]; 
+    var layout= {
+      title: "Pie Chart Top 10 Samples"}
+    Plotly.newPlot("pie", data1, layout);
+
+});
+    // @TODO: Build a Bubble Chart using the sample data
+    
+
+
+      // @TODO: Build a Bubble Chart using the sample data
+      d3.json(plotData).then(function(data){
+        var x_axis = data.otu_ids;
+        var y_axis = data.sample_values;
+        var size = data.sample_values;
+        var color = data.otu_ids;
+        var texts = data.otu_labels;
+      
+        var bubble = {
+          x: x_axis,
+          y: y_axis,
+          text: texts,
+          mode: `markers`,
+          marker: {
+            size: size,
+            color: color
+          }
+        };
+    
+        var data = [bubble];
+        var layout = {
+          title: "Belly Button Bacteria",
+          xaxis: {title: "OTU ID"}
+        };
+        Plotly.newPlot("bubble", data, layout);
+    
+
 }
 
 function init() {
@@ -54,3 +98,4 @@ function optionChanged(newSample) {
 
 // Initialize the dashboard
 init();
+
